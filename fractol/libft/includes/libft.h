@@ -6,7 +6,7 @@
 /*   By: fnussbau <fnussbau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 15:02:53 by fnussbau          #+#    #+#             */
-/*   Updated: 2019/01/16 16:41:02 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/12 18:29:10 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ void				ft_tabcpy(char **src, char ***dest);
 void				ft_deltab(char ***tab);
 void				ft_swap(int *a, int *b);
 int					ft_iabs(int x);
-int					ft_fabs(float x);
+float				ft_fabs(float x);
+double				ft_lfabs(double x);
 int					ft_imax(int x, int y);
 float				ft_fmax(float x, float y);
 int					ft_imin(int x, int y);
