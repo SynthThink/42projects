@@ -90,3 +90,16 @@ int		has_duplicates(t_node *stack)
 	}
 	return (1);
 }
+
+long	is_in_array(long *arr, int size, int value)
+{
+	int		i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (arr[i++] == value)
+			return (1);
+	}
+	return (0);
+}

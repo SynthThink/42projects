@@ -15,11 +15,9 @@
 char	*zero_padding(char **str, int length)
 {
 	char	*cat;
-	int		i;
 	int		b;
 	int		padding;
 
-	i = 0;
 	b = 0;
 	padding = length - ft_strlen(*str);
 	cat = ft_memcset(padding, '0');
@@ -88,10 +86,8 @@ void	ft_precision(t_keys *l)
 {
 	int		len;
 	int		prec;
-	int		b;
 	char	*fill;
 
-	b = 0;
 	len = ft_strlen(l->res);
 	if (l->prec[0] == '\0')
 		return ;

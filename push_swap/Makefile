@@ -43,7 +43,7 @@ SRC2_PATH = src_push
 OBJ2_PATH = obj_push
 
 INCLUDES = ./includes/
-CC = gcc
+CC = clang
 CCFLAGS = -Wall -Wextra -ggdb #-Werror
 CPPFLAGS = -I ./libftprintf/includes -I $(INCLUDES) -I ./libftprintf/libft/includes
 LIBFLAGS = -L ./libftprintf/ -lftprintf
@@ -58,20 +58,20 @@ OBJ2_NAME = $(SRC2_NAME:.c=.o)
 SRC2 = $(addprefix $(SRC2_PATH)/,$(SRC2_NAME))
 OBJ2 = $(addprefix $(OBJ2_PATH)/,$(OBJ2_NAME))
 
-all: $(NAME) $(NAME2)
+all: $(NAME2) #$(NAME)
 
 
 $(NAME): $(OBJ)
 	@make -C libftprintf/
-	@make -C minilibx_macos
+	#@make -C minilibx_macos
 	$(CC) $(CCFLAGS) $(CPPFLAGS) $(LIBFLAGS) $(MLXFLAGS) $(FRMWORK) $^ -o $@
 
 $(NAME2): $(OBJ2)
-	$(CC) $(CCFLAGS) $(CPPFLAGS) $(LIBFLAGS) $^ -o $@
+	$(CC) $(CCFLAGS) $^  $(CPPFLAGS) $(LIBFLAGS) -o $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
-	$(CC) $(CCFLAGS) $(CPPFLAGS) -o $@ -c $<
+	$(CC) $(CCFLAGS) $(CPPFLAGS) $(MLXFLAGS) -o $@ -c $<
 
 $(OBJ2_PATH)/%.o: $(SRC2_PATH)/%.c
 	@mkdir $(OBJ2_PATH) 2> /dev/null || true
@@ -79,7 +79,7 @@ $(OBJ2_PATH)/%.o: $(SRC2_PATH)/%.c
 
 clean:
 	@make clean -C libftprintf/
-	@make clean -C minilibx_macos
+	#@make clean -C minilibx_macos
 	rm -f $(OBJ) $(OBJ2)
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
 	@rmdir $(OBJ2_PATH) 2> /dev/null || true

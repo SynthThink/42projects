@@ -94,18 +94,18 @@ int		main(int ac, char **av)
 		return (0);
 	stack = initialize_stack();
 	ft_parse(stack, av, ac);
-	if (has_duplicates(stack->stack_a) == 0)
-		ft_error();
-	ft_quick_sort(stack);
-	if (ft_strchr(stack->options, 'd') != NULL)
-	{
-		print_list(stack->stack_a, "stack a");
-		print_list(stack->stack_b, "stack b");
-		ft_printf("\n%d instructions\n", stack->count);
-	}
-	if (ft_strchr(stack->options, 's') == NULL)
-		ft_print_ope(stack->operations);
-	ft_free(stack);
-	free(stack);
+	// if (has_duplicates(stack->stack_a) == 0)
+	// 	ft_error();
+	// ft_quick_sort(stack);
+	// if (ft_strchr(stack->options, 'd') != NULL)
+	// {
+	// 	print_list(stack->stack_a, "stack a");
+	// 	print_list(stack->stack_b, "stack b");
+	// 	ft_printf("\n%d instructions\n", stack->count);
+	// }
+	// if (ft_strchr(stack->options, 's') == NULL)
+	// 	ft_print_ope(stack->operations);
+	// ft_free(stack);
+	// free(stack);
 	return (0);
 }

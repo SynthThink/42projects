@@ -65,15 +65,8 @@ void	ft_bubble_sort(t_stack *stack)
 	i = 0;
 	while (i < stack->size)
 	{
-		// if (ft_strchr(stack->options, 'd') != NULL)
-		// 	print_list(stack->stack_a, "debut stack a|");
 		do_swaps(stack);
 		do_rotate(stack);
-		// if (ft_strchr(stack->options, 'd') != NULL)
-		// {
-		// 	print_list(stack->stack_a, "debut stack a|");
-		// 	print_list(stack->stack_b, "debut stack b|");
-		// }
 		if (is_sort(stack->stack_a) == 1 && stack->stack_b == NULL)
 			break ;
 		else

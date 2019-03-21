@@ -78,6 +78,9 @@ long	*find_three_min(t_node *stack_a)
 	nb[0] = 2147483648;
 	nb[1] = 2147483648;
 	nb[2] = 2147483648;
+	nb[3] = 2147483648;
+	nb[4] = 2147483648;
+	nb[5] = 2147483648;
 	i = 0;
 	while (stack_a)
 	{
@@ -95,12 +98,29 @@ long	*find_three_min(t_node *stack_a)
 		}
 		else if (nb[2] > stack_a->value)
 		{
-			if (nb[0] > nb[2])
-				nb[0] = nb[2];
+			if (nb[3] > nb[2])
+				nb[3] = nb[2];
 			nb[2] = stack_a->value;
 		}
+		else if (nb[3] < stack_a->value)
+		{
+			if (nb[4] > nb[3])
+				nb[4] = nb[3];
+			nb[3] = stack_a->value;
+		}
+		else if (nb[4] < stack_a->value)
+		{
+			if (nb[5] > nb[4])
+				nb[5] = nb[4];
+			nb[4] = stack_a->value;
+		}
+		else if (nb[5] < stack_a->value)
+		{
+			if (nb[0] > nb[5])
+				nb[0] = nb[5];
+			nb[5] = stack_a->value;
+		}
 		stack_a = stack_a->next;
-
 	}
 	return (nb);
 }
@@ -164,18 +184,7 @@ long	*find_three_max(t_node *stack_a)
 	return (nb);
 }
 
-long	is_in_array(long *arr, int size, int value)
-{
-	int		i;
 
-	i = 0;
-	while (i < size)
-	{
-		if (arr[i++] == value)
-			return (1);
-	}
-	return (0);
-}
 
 void	ft_selection_sort_from_b(t_stack *stack, int size)
 {
@@ -187,8 +196,7 @@ void	ft_selection_sort_from_b(t_stack *stack, int size)
 	{
 		if (stack->stack_b && stack->stack_b->value == max->value)
 		{
-			do_ope(stack, 4);
-			size--;
+			do_ope(stack, 4 + 0 * size--);
 			max = find_max(stack->stack_b, &posmax);
 		}
 		while (stack->stack_b && stack->stack_b->value != max->value)

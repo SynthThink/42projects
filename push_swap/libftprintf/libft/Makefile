@@ -27,7 +27,7 @@ SRC = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c f
 	  ft_convert_base.c ft_ltoi.c ft_llpower.c ft_numlen.c
 CC 			= gcc
 CFLAGS		= -Werror -Wall -Wextra
-CPPFLAGS = -I ./Includes/
+CPPFLAGS = -I ./includes/
 
 HEADER = libft.h
 

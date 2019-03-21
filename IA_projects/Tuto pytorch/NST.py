@@ -12,7 +12,7 @@ import copy
 from PIL import Image
 
 print(torch.cuda.device_count())
-os.environ['TORCH_MODEL_ZOO'] = '/sgoinfre/goinfre/Perso/malluin'
+# os.environ['TORCH_MODEL_ZOO'] = '/sgoinfre/goinfre/Perso/malluin'
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 imsize = 512 if torch.cuda.is_available() else 512
 
@@ -35,26 +35,30 @@ def show_image(tensor, i, row = 1, col = 2):
 	plt.subplot(row, col, i)
 	plt.imshow(image)
 
-
-load_resize = transforms.Compose([transforms.Resize((740, 1440)), transforms.ToTensor()])
-def scale_up_save(tensor, i):
-	resized = tensor.squeeze(0)
-	resized = unloader(resized)
-	# resized.save('test1.jpg')
-	resized = load_resize(resized)
-	resized = resized.squeeze(0)
-	resized = unloader(resized)
-	resized.save('results_NST/test' + str(i) +'.jpg')
-
-
-style_img = image_loader("stary_night.jpg")
-content_img = image_loader("Lille.jpg")
+style_img_path = "vangogh.jpg"
+content_img_path = "nono.jpg"
+style_img = image_loader(style_img_path)
+content_img = image_loader(content_img_path)
+old_size = reversed(Image.open(content_img_path).size)
+old_size = tuple(old_size)
 
 print(style_img.size(), content_img.size())
 assert style_img.size() == content_img.size()
 
-# show_image(style_img, 1)
-# show_image(content_img, 2)
+load_resize = transforms.Compose([transforms.Resize(old_size), transforms.ToTensor()])
+def scale_up_save(tensor, i):
+	resized = tensor.squeeze(0)
+	resized = unloader(resized.cpu())
+	# resized.save('test1.jpg')
+	resized = load_resize(resized)
+	resized = resized.squeeze(0)
+	resized = unloader(resized)
+	resized.save('results_NST/output' + str(i) +'.jpg')
+	print('saving results_NST/output' + str(i) +'.jpg...')
+
+# show_image(style_img.cpu(), 1)
+# show_image(content_img.cpu(), 2)
+# plt.show()
 
 class ContentLoss(nn.Module):
 
@@ -112,65 +116,69 @@ class Normalization(nn.Module):
 
 content_layers_default = ['conv_4']
 style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5']
+# style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5', 'conv_6', 'conv_7', 'conv_8', 'conv_9', 'conv_10', 'conv_11', 'conv_12', 'conv_13', 'conv_14', 'conv_15', 'conv_16']
+# style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5']
 
 def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
                                style_img, content_img, content_layers=content_layers_default,
                                style_layers=style_layers_default):
-    cnn = copy.deepcopy(cnn)
-    normalization = Normalization(normalization_mean, normalization_std).to(device)
-    content_losses = []
-    style_losses = []
-    # assuming that cnn is a nn.Sequential, so we make a new nn.Sequential
-    # to put in modules that are supposed to be activated sequentially
-    model = nn.Sequential(normalization)
+	cnn = copy.deepcopy(cnn)
+	normalization = Normalization(normalization_mean, normalization_std).to(device)
+	content_losses = []
+	style_losses = []
+	# assuming that cnn is a nn.Sequential, so we make a new nn.Sequential
+	# to put in modules that are supposed to be activated sequentially
+	model = nn.Sequential(normalization)
 
-    i = 0  # increment every time we see a conv
-    for layer in cnn.children():
-        if isinstance(layer, nn.Conv2d):
-            i += 1
-            name = 'conv_{}'.format(i)
-        elif isinstance(layer, nn.ReLU):
-            name = 'relu_{}'.format(i)
-            # The in-place version doesn't play very nicely with the ContentLoss
-            # and StyleLoss we insert below. So we replace with out-of-place
-            # ones here.
-            layer = nn.ReLU(inplace=False)
-        elif isinstance(layer, nn.MaxPool2d):
-            name = 'pool_{}'.format(i)
-        elif isinstance(layer, nn.BatchNorm2d):
-            name = 'bn_{}'.format(i)
-        else:
-            raise RuntimeError('Unrecognized layer: {}'.format(layer.__class__.__name__))
-        model.add_module(name, layer)
-        if name in content_layers:
+	i = 0  # increment every time we see a conv
+	for layer in cnn.children():
+		if isinstance(layer, nn.Conv2d):
+			i += 1
+			name = 'conv_{}'.format(i)
+			# print(name)
+		elif isinstance(layer, nn.ReLU):
+			name = 'relu_{}'.format(i)
+			# The in-place version doesn't play very nicely with the ContentLoss
+			# and StyleLoss we insert below. So we replace with out-of-place
+			# ones here.
+			layer = nn.ReLU(inplace=False)
+		elif isinstance(layer, nn.MaxPool2d):
+			name = 'pool_{}'.format(i)
+		elif isinstance(layer, nn.BatchNorm2d):
+			name = 'bn_{}'.format(i)
+		else:
+			raise RuntimeError('Unrecognized layer: {}'.format(layer.__class__.__name__))
+		model.add_module(name, layer)
+		if name in content_layers:
             # add content loss:
-            target = model(content_img).detach()
-            content_loss = ContentLoss(target)
-            model.add_module("content_loss_{}".format(i), content_loss)
-            content_losses.append(content_loss)
+			target = model(content_img).detach()
+			content_loss = ContentLoss(target)
+			model.add_module("content_loss_{}".format(i), content_loss)
+			content_losses.append(content_loss)
 
-        if name in style_layers:
-            # add style loss:
-            target_feature = model(style_img).detach()
-            style_loss = StyleLoss(target_feature)
-            model.add_module("style_loss_{}".format(i), style_loss)
-            style_losses.append(style_loss)
+		if name in style_layers:
+			# add style loss:
+			target_feature = model(style_img).detach()
+			style_loss = StyleLoss(target_feature)
+			model.add_module("style_loss_{}".format(i), style_loss)
+			style_losses.append(style_loss)
 
     # now we trim off the layers after the last content and style losses
-    for i in range(len(model) - 1, -1, -1):
-        if isinstance(model[i], ContentLoss) or isinstance(model[i], StyleLoss):
-            break
-    model = model[:(i + 1)]
-    return model, style_losses, content_losses
+	for i in range(len(model) - 1, -1, -1):
+		if isinstance(model[i], ContentLoss) or isinstance(model[i], StyleLoss):
+			break
+	model = model[:(i + 1)]
+	return model, style_losses, content_losses
 
 input_img = content_img.clone()
+# input_img = torch.randn(content_img.data.size(), device=device)
 
 def get_input_optimizer(input_img):
 	optimizer = optim.LBFGS([input_img.requires_grad_()])
 	return optimizer
 
 def run_style_transfer(cnn, normalization_mean, normalization_std,
-						content_img, style_img, input_img, num_steps=50,
+						content_img, style_img, input_img, num_steps=5000,
 						style_weight=1000000, content_weight=1):
 	print('Building the style transfer model..')
 	model, style_losses, content_losses = get_style_model_and_losses(cnn,
@@ -206,9 +214,10 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
 				print('Style Loss : {:4f} Content Loss: {:4f}'.format(
 				style_score.item(), content_score.item()))
 				print()
-				tmp = copy.deepcopy(input_img.data.clamp_(0, 1))
-				save_images.append(tmp)
-				scale_up_save(tmp, run[0] / 5)
+				if run[0] % 50 == 49:
+					tmp = copy.deepcopy(input_img.data.clamp_(0, 1))
+					save_images.append(tmp)
+					scale_up_save(tmp, run[0] / 5)
 			return style_score + content_score
 		optimizer.step(closure)
 
@@ -221,11 +230,12 @@ save_images, output = run_style_transfer(cnn, cnn_normalization_mean, cnn_normal
 
 i = 1
 plt.figure(figsize=(20,20))
-for image in save_images:
-	# show_image(image, i, 2, 5)
-	# scale_up_save(image, i)
-	plt.subplot(5, 10, i)
-	plt.imshow(resized)
-	i += 1
+# for image in save_images:
+# 	# show_image(image, i, 2, 5)
+# 	# scale_up_save(image, i)
+# 	plt.subplot(5, 10, i)
+# 	plt.imshow(resized)
+# 	i += 1
+show_image(output.detach().cpu(), 1)
 
 plt.show()

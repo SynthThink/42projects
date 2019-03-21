@@ -14,7 +14,7 @@
 #define PUSH_SWAP_H
 # include "libftprintf.h"
 # include "get_next_line.h"
-# include "visu.h"
+/*# include "visu.h"*/
 
 typedef struct		s_tuple {
 	int				i;
@@ -39,8 +39,8 @@ typedef	struct		s_stack {
 	int				stop;
 }					t_stack;
 
-int					ft_visualize(t_stack *stack, t_win *mlx);
-int					ft_process_reel(t_win *mlx);
+//int					ft_visualize(t_stack *stack, t_win *mlx);
+//int					ft_process_reel(t_win *mlx);
 t_node				*lst_new_node(int content);
 void				swap(t_node **lst);
 void				rotate(t_node **lst);
@@ -62,7 +62,7 @@ void				ft_ko();
 
 void				ft_process_inf(t_stack *stack, char val);
 void				ft_process_sup(t_stack *stack, char val);
-void				ft_process(t_stack *stack, t_win *mlx, int mode);
+//void				ft_process(t_stack *stack, t_win *mlx, int mode);
 
 void				swap_nodes_intra_a(t_node *node_a, t_node *node_b,
 					t_node *stack_top, t_stack *stack);
@@ -74,14 +74,15 @@ void				ft_selection_sort(t_stack *stack, int size);
 void				do_ope(t_stack *stack, int nb);
 int					has_duplicates(t_node *stack);
 int					is_sort(t_node *stack);
-t_node				*get_end(t_node *stack);
+t_node			*get_end(t_node *stack);
+long				is_in_array(long *arr, int size, int value);
 
 int					get_lst_len(t_node *tmp);
 void				set_pivot_sorted(t_node *node, int pvalue);
 int					find_min_int(t_node *node, int threshold);
 int					find_median(t_node *node, int size);
 
-t_win			*mlx_initialize();
+/*t_win			*mlx_initialize();
 
 int				map_to_proj(t_win *mlx);
 int				proj_to_screen(t_win *mlx);
@@ -99,7 +100,6 @@ void			legend_text(t_win *mlx);
 void			legend_box(t_win *mlx);
 void			boxes(t_win *mlx);
 void			draw_grid(t_win	*mlx);
-void			offset_z(t_win *mlx, float offset);
 
 int				image_init(t_win *mlx);
 int				refresh_init(t_win *mlx);
@@ -107,9 +107,7 @@ int				refresh_show(t_win *mlx, t_stack *stack);
 
 int				deal_key(int key, void *param);
 
-int				lin_interx(t_pix px1, t_pix px2, int x, int signe);
-int				lin_intery(t_pix px1, t_pix px2, int y, int signe);
 void			color_init(t_win *mlx);
-int				*palette_init(char *av);
+int				*palette_init(char *av);*/
 
 #endif
