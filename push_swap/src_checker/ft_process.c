@@ -6,7 +6,7 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/30 18:22:49 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/01 17:34:30 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/22 14:48:59 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ int		ft_process_reel(t_win *mlx)
 		operation = operation->next;
 		free(tmp);
 		stack->operations = operation;
+		stack->op_count++;
 	}
-	if (ft_strchr(stack->options, 'v') != NULL)
+	if (ft_strchr(stack->options, 'v') != NULL && mlx)
 		ft_visualize(stack, mlx);
 	return (1);
 }
@@ -83,8 +84,6 @@ void	ft_process(t_stack *stack, t_win *mlx, int mode)
 	t_node	*operation;
 	t_node	*tmp;
 
-	// if (mlx && ft_strchr(stack->options, 'v') != NULL)
-	// 	ft_visualize(stack, mlx);
 	operation = stack->operations;
 	while (operation)
 	{
@@ -96,9 +95,10 @@ void	ft_process(t_stack *stack, t_win *mlx, int mode)
 		operation = operation->next;
 		free(tmp);
 		stack->operations = operation;
+		stack->op_count++;
 		if (mode == 1)
-			break;
+			break ;
 	}
-	if (ft_strchr(stack->options, 'v') != NULL)
+	if (ft_strchr(stack->options, 'v') != NULL && mlx)
 		ft_visualize(stack, mlx);
 }

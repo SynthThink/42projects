@@ -6,11 +6,38 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/30 13:54:31 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/01 14:48:45 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/22 14:48:41 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int		has_duplicates_checker(t_node *stack, int size)
+{
+	t_node	*node;
+	t_node	*cmp;
+	int		i;
+
+	node = stack;
+	if (size == 0)
+		exit(-1);
+	if (node)
+		i = node->value;
+	node = node->next;
+	while (node)
+	{
+		cmp = node;
+		while (cmp)
+		{
+			if (i == cmp->value)
+				ft_error();
+			cmp = cmp->next;
+		}
+		i = node->value;
+		node = node->next;
+	}
+	return (1);
+}
 
 void	assign_op(char *str, t_stack *stack)
 {
@@ -46,7 +73,7 @@ int		ft_verify(char *str)
 	int		i;
 
 	i = str[0] == '-' ? 1 : 0;
-	if (ft_strlen(str) > 11)
+	if (ft_strlen(str) > 11 || str[i] == '\0')
 		ft_error();
 	while (str[i] != '\0')
 	{
@@ -59,33 +86,31 @@ int		ft_verify(char *str)
 	return (nb);
 }
 
-void	ft_parse(t_stack *stack, char **av, int ac)
+void	ft_parse_checker(t_stack *sk, char **av, int ac, int i)
 {
-	int		i;
 	int		nb;
 	char	*str;
 
-
-	i = 1;
-	if (ac == 1)
-		ft_error();
-	while (av[i][0] == '-' && ft_isalpha(av[i][1]) == 1)
-	{
-		stack->options = ft_insert(&stack->options, stack->options, &av[i][1]);
-		i++;
-	}
+	while (i < ac && av[i][0] == '-' && ft_isalpha(av[i][1]) == 1)
+		sk->options = ft_insert(&sk->options, sk->options, &av[i++][1]);
 	while (i < ac)
 	{
 		nb = ft_verify(av[i++]);
-		stack->max = stack->max < nb ? nb : stack->max;
-		stack->min = stack->min > nb ? nb : stack->min;
-		lst_new_back(nb, &stack->stack_a);
-		stack->size++;
+		sk->max = sk->max < nb ? nb : sk->max;
+		sk->min = sk->min > nb ? nb : sk->min;
+		lst_new_back(nb, &sk->stack_a);
+		sk->size++;
 	}
+	if (ft_strchr(sk->options, 'h') != NULL && sk->size == 0)
+		ft_usage();
+	has_duplicates_checker(sk->stack_a, sk->size);
+	str = NULL;
+	if (read(0, &str, 0) == -1)
+		ft_error();
 	while (get_next_line(0, &str) > 0)
 	{
-		assign_op(str, stack);
-		free(str);
+		assign_op(str, sk);
+		ft_memdel((void **)&str);
 	}
-	free(str);
+	ft_memdel((void **)&str);
 }

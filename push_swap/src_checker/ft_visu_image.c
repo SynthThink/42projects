@@ -6,13 +6,13 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/28 16:24:17 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/01 16:20:41 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/22 15:02:35 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	ft_show_b(t_win *mlx, t_stack *stack, t_node *node, int nb_size)
+void	ft_show_b(t_win *mlx, t_stack *sk, t_node *nd, int nb_size)
 {
 	int		i;
 	int		j;
@@ -20,27 +20,28 @@ void	ft_show_b(t_win *mlx, t_stack *stack, t_node *node, int nb_size)
 	int		height;
 	int		color;
 
-	height = 0;
-	while (node)
+	height = HEIGHT * 0.02;
+	while (nd)
 	{
-		color = node->value > 0 ? rgb(0, 255, 0) : rgb(255, 0, 0);
-		width = node->value > 0 ? WIDTH / 2 * node->value / stack->max : WIDTH / 2
-			* node->value / stack->min;
-		width += WIDTH / 2;
+		color = nd->value > 0 ? rgb(1 - nd->value * 255 / sk->max,
+			nd->value * 255 / sk->max, 0) : rgb(1 - nd->value * 255 /
+			sk->min, 0, nd->value * 255 / sk->min);
+		width = nd->value > 0 ? WIDTH / 2 * nd->value /
+			sk->max : WIDTH / 2 * nd->value / sk->min;
 		i = height;
 		while (i < height + nb_size)
 		{
-			j = WIDTH / 2;
-			while (j < width)
+			j = WIDTH * 3 / 4 - (width / 2) - 5;
+			while (j < WIDTH * 3 / 4 + width / 2)
 				place_pixel(mlx, j++, i, color);
 			i++;
 		}
 		height += nb_size;
-		node = node->next;
+		nd = nd->next;
 	}
 }
 
-void	ft_show_a(t_win *mlx, t_stack *stack, t_node *node, int nb_size)
+void	ft_show_a(t_win *mlx, t_stack *sk, t_node *nd, int nb_size)
 {
 	int		i;
 	int		j;
@@ -48,51 +49,51 @@ void	ft_show_a(t_win *mlx, t_stack *stack, t_node *node, int nb_size)
 	int		height;
 	int		color;
 
-	height = 0;
-	while (node)
+	height = HEIGHT * 0.02;
+	while (nd)
 	{
-		color = node->value > 0 ? rgb(0, 255, 0) : rgb(255, 0, 0);
-		width = node->value > 0 ? WIDTH / 2 * node->value / stack->max : WIDTH
-			/ 2 * node->value / stack->min;
+		color = nd->value > 0 ? rgb(1 - nd->value * 255 / sk->max,
+			nd->value * 255 / sk->max, 0) : rgb(1 - nd->value * 255 /
+			sk->min, 0, nd->value * 255 / sk->min);
+		width = nd->value > 0 ? WIDTH / 2 * nd->value / sk->max : WIDTH
+			/ 2 * nd->value / sk->min;
 		i = height;
 		while (i < height + nb_size)
 		{
-			j = 0;
-			while (j < width)
+			j = WIDTH / 4 - width / 2 + 5;
+			while (j < WIDTH / 4 + width / 2)
 				place_pixel(mlx, j++, i, color);
-			j = 0;
 			i++;
 		}
 		height += nb_size;
-		node = node->next;
+		nd = nd->next;
 	}
 }
 
 int		refresh_show(t_win *mlx, t_stack *stack)
 {
-	static int		nb_size = 0;
+	static int	nb_size = 0;
+	char		*tmp;
 
 	if (nb_size == 0)
-		nb_size = ((HEIGHT - 60) / stack->size) > 0 ? ((HEIGHT - 60) / stack->size) : 1;
+		nb_size = ((HEIGHT - 60) / stack->size) > 0 ? ((HEIGHT - 60)
+			/ stack->size) : 1;
+	stack->max = stack->max == 0 ? -1 : stack->max;
+	stack->min = stack->min == 0 ? 1 : stack->min;
 	ft_show_a(mlx, stack, stack->stack_a, nb_size);
 	ft_show_b(mlx, stack, stack->stack_b, nb_size);
-	// legend_box(mlx);
-
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->image_ptr, 0, 0);
-	mlx_string_put(mlx->mlx_ptr, mlx->win_ptr, 250, HEIGHT - 50,
+	mlx_string_put(mlx->mlx_ptr, mlx->win_ptr, WIDTH / 4, HEIGHT - 55,
 		0x0000FF00, "Stack A");
-	mlx_string_put(mlx->mlx_ptr, mlx->win_ptr, 700, HEIGHT - 50,
+	mlx_string_put(mlx->mlx_ptr, mlx->win_ptr, WIDTH * 3 / 4, HEIGHT - 55,
 		0x0000FF00, "Stack B");
-	// legend_text(mlx);
+	mlx_string_put(mlx->mlx_ptr, mlx->win_ptr, WIDTH / 2 - 90, HEIGHT - 55,
+		0x00FFFFFF, "Instructions:");
+	tmp = ft_itoa(stack->op_count);
+	mlx_string_put(mlx->mlx_ptr, mlx->win_ptr, WIDTH / 2 + 60, HEIGHT - 55,
+		0x00FFFFFF, tmp);
+	ft_memdel((void**)&tmp);
+	mlx_string_put(mlx->mlx_ptr, mlx->win_ptr, 300, HEIGHT - 25, 0x00FFFFFF,
+		"Commands:     Pause: Return      Forward: Arrows      Finish:  Space");
 	return (1);
 }
-
-//
-// int		refresh_legend(void *param)
-// {
-// 	t_win *mlx;
-//
-// 	mlx = (t_win *)param;
-// 	legend_text(mlx);
-// 	return (1);
-// }

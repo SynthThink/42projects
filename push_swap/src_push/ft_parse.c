@@ -6,11 +6,37 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/30 13:54:31 by malluin           #+#    #+#             */
-/*   Updated: 2019/01/31 16:45:55 by malluin          ###   ########.fr       */
+/*   Updated: 2019/03/08 17:12:28 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+t_stack	*initialize_stack(void)
+{
+	t_stack	*stack;
+
+	if (!(stack = (t_stack *)malloc(sizeof(t_stack))))
+		exit(-1);
+	stack->stack_a = NULL;
+	stack->stack_b = NULL;
+	stack->operations = NULL;
+	stack->options = ft_strdup("");
+	stack->count = 0;
+	stack->size = 0;
+	return (stack);
+}
+
+int		has_non_sorted(t_node *node)
+{
+	while (node)
+	{
+		if (node->sorted == 0)
+			return (1);
+		node = node->next;
+	}
+	return (0);
+}
 
 int		ft_verify(char *str)
 {
@@ -43,7 +69,7 @@ void	ft_parse(t_stack *stack, char **av, int ac)
 	i = 1;
 	if (ac == 1)
 		ft_error();
-	while (av[i][0] == '-' && ft_isalpha(av[i][1]) == 1)
+	while (i < ac && av[i][0] == '-' && ft_isalpha(av[i][1]) == 1)
 	{
 		stack->options = ft_insert(&stack->options, stack->options, &av[i][1]);
 		i++;
@@ -55,5 +81,7 @@ void	ft_parse(t_stack *stack, char **av, int ac)
 		stack->size++;
 	}
 	if (stack->stack_a == NULL)
+		ft_error();
+	if (has_duplicates(stack->stack_a) == 0)
 		ft_error();
 }

@@ -6,7 +6,7 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 11:21:47 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/01 15:18:15 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/08 12:05:13 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,5 @@ int		ft_visualize(t_stack *stack, t_win *mlx)
 		return (0);
 	if (!(refresh_show(mlx, stack)))
 		return (0);
-	// mlx_key_hook(mlx->win_ptr, deal_key, (void *)mlx);
-	// mlx_mouse_hook(mlx->win_ptr, mouse_line, (void *)(mlx));
-	// mlx_expose_hook(mlx->win_ptr, refresh_legend, (void *)(mlx));
 	return (1);
 }

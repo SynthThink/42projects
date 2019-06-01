@@ -6,7 +6,7 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 10:26:56 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/04 18:41:27 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/07 16:19:18 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	print_list(t_node *lst, char *str)
 	i = 0;
 	while (lst)
 	{
-		ft_printf("|%-6s lst %-2d: %5d %5d\n", str, i++, lst->value, lst->sorted);
+		ft_printf("|%-6s lst %-2d: %5d %5d\n", str,
+			i++, lst->value, lst->sorted);
 		lst = lst->next;
 	}
 	ft_printf("\n");

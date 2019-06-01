@@ -6,363 +6,114 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 17:03:30 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/05 18:34:34 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/07 17:10:15 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_node	*find_min(t_node *stack_a, int *index)
+void	do_ope_increment(t_stack *stack, int ope, int *posmax, int *posmin)
 {
-	int		i;
-	int		j;
-	t_node	*min;
+	int		signe;
 
-	if (!stack_a)
-		return (0);
-	i = stack_a->value;
-	j = 0;
-	*index = 0;
-	min = stack_a;
-	stack_a = stack_a->next;
-	while (stack_a)
-	{
-		j++;
-		if (i > stack_a->value)
-		{
-			i = stack_a->value;
-			*index = j;
-			min = stack_a;
-		}
-		stack_a = stack_a->next;
-	}
-	return (min);
+	signe = ope > 0 ? 1 : -1;
+	ope = ft_iabs(ope);
+	do_ope(stack, ope);
+	if (posmin != NULL)
+		*posmin += signe;
+	if (posmax != NULL)
+		*posmax += signe;
 }
-
-t_node	*find_max(t_node *stack_a, int *index)
-{
-	int		i;
-	int		j;
-	t_node	*max;
-
-	if (!stack_a)
-		return (0);
-	i = stack_a->value;
-	j = 0;
-	*index = 0;
-	max = stack_a;
-	stack_a = stack_a->next;
-	while (stack_a)
-	{
-		j++;
-		if (i < stack_a->value)
-		{
-			i = stack_a->value;
-			*index = j;
-			max = stack_a;
-		}
-		stack_a = stack_a->next;
-	}
-	return (max);
-}
-
-long	*find_three_min(t_node *stack_a)
-{
-	int		i;
-	long	*nb;
-
-	if (!stack_a)
-		return (0);
-	if (!(nb = (long *)malloc(sizeof(long) * (3))))
-		exit (-1);
-	nb[0] = 2147483648;
-	nb[1] = 2147483648;
-	nb[2] = 2147483648;
-	nb[3] = 2147483648;
-	nb[4] = 2147483648;
-	nb[5] = 2147483648;
-	i = 0;
-	while (stack_a)
-	{
-		if (nb[0] > stack_a->value)
-		{
-			if (nb[1] > nb[0])
-				nb[1] = nb[0];
-			nb[0] = stack_a->value;
-		}
-		else if (nb[1] > stack_a->value)
-		{
-			if (nb[2] > nb[1])
-				nb[2] = nb[1];
-			nb[1] = stack_a->value;
-		}
-		else if (nb[2] > stack_a->value)
-		{
-			if (nb[3] > nb[2])
-				nb[3] = nb[2];
-			nb[2] = stack_a->value;
-		}
-		else if (nb[3] < stack_a->value)
-		{
-			if (nb[4] > nb[3])
-				nb[4] = nb[3];
-			nb[3] = stack_a->value;
-		}
-		else if (nb[4] < stack_a->value)
-		{
-			if (nb[5] > nb[4])
-				nb[5] = nb[4];
-			nb[4] = stack_a->value;
-		}
-		else if (nb[5] < stack_a->value)
-		{
-			if (nb[0] > nb[5])
-				nb[0] = nb[5];
-			nb[5] = stack_a->value;
-		}
-		stack_a = stack_a->next;
-	}
-	return (nb);
-}
-
-long	*find_three_max(t_node *stack_a)
-{
-	int		i;
-	long	*nb;
-
-	if (!stack_a)
-		return (0);
-	if (!(nb = (long *)malloc(sizeof(long) * (3))))
-		exit (-1);
-	nb[0] = -2147483649;
-	nb[1] = -2147483649;
-	nb[2] = -2147483649;
-	nb[3] = -2147483649;
-	nb[4] = -2147483649;
-	nb[5] = -2147483649;
-	i = 0;
-	while (stack_a)
-	{
-		if (nb[0] < stack_a->value)
-		{
-			if (nb[1] < nb[0])
-				nb[1] = nb[0];
-			nb[0] = stack_a->value;
-		}
-		else if (nb[1] < stack_a->value)
-		{
-			if (nb[2] < nb[1])
-				nb[2] = nb[1];
-			nb[1] = stack_a->value;
-		}
-		else if (nb[2] < stack_a->value)
-		{
-			if (nb[3] < nb[2])
-				nb[3] = nb[2];
-			nb[2] = stack_a->value;
-		}
-		else if (nb[3] < stack_a->value)
-		{
-			if (nb[4] < nb[3])
-				nb[4] = nb[3];
-			nb[3] = stack_a->value;
-		}
-		else if (nb[4] < stack_a->value)
-		{
-			if (nb[5] < nb[4])
-				nb[5] = nb[4];
-			nb[4] = stack_a->value;
-		}
-		else if (nb[5] < stack_a->value)
-		{
-			if (nb[0] < nb[5])
-				nb[0] = nb[5];
-			nb[5] = stack_a->value;
-		}
-		stack_a = stack_a->next;
-	}
-	return (nb);
-}
-
-
 
 void	ft_selection_sort_from_b(t_stack *stack, int size)
 {
 	int		posmax;
-	t_node	*max;
+	int		max;
 
 	max = find_max(stack->stack_b, &posmax);
 	while (stack->stack_b)
 	{
-		if (stack->stack_b && stack->stack_b->value == max->value)
+		if (stack->stack_b && stack->stack_b->value == max)
 		{
-			do_ope(stack, 4 + 0 * size--);
+			do_ope(stack, 4);
+			size--;
 			max = find_max(stack->stack_b, &posmax);
 		}
-		while (stack->stack_b && stack->stack_b->value != max->value)
+		while (stack->stack_b && stack->stack_b->value != max)
 		{
 			if (posmax <= size / 2)
-			{
-				do_ope(stack, 7);
-				posmax--;
-			}
+				do_ope_increment(stack, -7, &posmax, NULL);
 			else
-			{
-				do_ope(stack, 10);
-				posmax++;
-			}
+				do_ope_increment(stack, 10, &posmax, NULL);
 		}
 	}
 }
 
-void	ft_selection_sort(t_stack *stack, int size)
+void	push_if_array(t_stack *stack, t_min *t_m, int *c, int *size)
 {
-	int		posmax;
-	int		posmin;
-	int		c;
-	long	*mins;
-	long	*maxs;
-	t_node	*min;
-	t_node	*max;
-	int		size2;
+	if (stack->stack_a && is_in_array(t_m->mins,
+		t_m->minmax, stack->stack_a->value))
+	{
+		do_ope_increment(stack, -5, size, &t_m->pmax);
+		free(t_m->mins);
+		t_m->mins = find_n_min(stack->stack_a, t_m->minmax);
+		find_min(stack->stack_a, &t_m->pmin);
+	}
+	if (stack->stack_a && is_in_array(t_m->maxs, t_m->minmax,
+		stack->stack_a->value))
+	{
+		do_ope(stack, 5);
+		do_ope_increment(stack, -7, size, &t_m->pmin);
+		(*c)++;
+		free(t_m->maxs);
+		t_m->maxs = find_n_max(stack->stack_a, t_m->minmax);
+		find_max(stack->stack_a, &t_m->pmax);
+	}
+}
 
-	size2 = size;
+void	rotate_to_target(t_stack *stack, t_min *t_m, int s)
+{
+	if (ft_imin(t_m->pmin, s - t_m->pmin) <= ft_imin(t_m->pmax, s - t_m->pmax))
+	{
+		while (stack->stack_a && is_in_array(t_m->mins, t_m->minmax,
+				stack->stack_a->value) != 1 && is_in_array(t_m->maxs,
+				t_m->minmax, stack->stack_a->value) != 1)
+			if (t_m->pmin <= s / 2)
+				do_ope_increment(stack, -6, &t_m->pmax, &t_m->pmin);
+			else
+				do_ope_increment(stack, 9, &t_m->pmax, &t_m->pmin);
+	}
+	else
+	{
+		while (stack->stack_a && is_in_array(t_m->maxs, t_m->minmax,
+				stack->stack_a->value) != 1 && is_in_array(t_m->mins,
+				t_m->minmax, stack->stack_a->value) != 1 && s != 1)
+			if (t_m->pmax <= s / 2)
+				do_ope_increment(stack, -6, &t_m->pmax, &t_m->pmin);
+			else
+				do_ope_increment(stack, 9, &t_m->pmax, &t_m->pmin);
+	}
+}
+
+void	ft_selection_sort(t_stack *stack, int size, char minmax)
+{
+	t_min	t_m;
+	int		c;
 
 	c = 0;
-	mins = find_three_min(stack->stack_a);
-	maxs = find_three_max(stack->stack_a);
-
-	// printf("%d %d %d\n\n", mins[0], mins[1], mins[2]);
-	min = find_min(stack->stack_a, &posmin);
-	max = find_max(stack->stack_a, &posmax);
-	printf("%d %d %d %d %d %d\n", maxs[0], maxs[1], maxs[2], maxs[3], maxs[4], maxs[5]);
-	printf("%d\n", stack->stack_a->value);
+	t_m.minmax = minmax;
+	t_m.mins = find_n_min(stack->stack_a, minmax);
+	t_m.maxs = find_n_max(stack->stack_a, minmax);
+	find_min(stack->stack_a, &t_m.pmin);
+	find_max(stack->stack_a, &t_m.pmax);
 	while (stack->stack_a)
 	{
-
-		if (stack->stack_a && is_in_array(mins, 6, stack->stack_a->value))
-		{
-			do_ope(stack, 5);
-			posmax--;
-			size--;
-			mins = find_three_min(stack->stack_a);
-			min = find_min(stack->stack_a, &posmin);
-		}
-		if (stack->stack_a && is_in_array(maxs, 6, stack->stack_a->value))
-		{
-			do_ope(stack, 5);
-			do_ope(stack, 7);
-			posmin--;
-			c++;
-			size--;
-			maxs = find_three_max(stack->stack_a);
-			max = find_max(stack->stack_a, &posmax);
-		}
-		if (ft_imin(posmin, size - posmin) <= ft_imin(posmax, size - posmax))
-			while (stack->stack_a && is_in_array(mins, 6, stack->stack_a->value) != 1)
-			{
-				if (posmin <= size / 2)
-				{
-					do_ope(stack, 6);
-					posmin--;
-					posmax--;
-				}
-				else
-				{
-					do_ope(stack, 9);
-					posmin++;
-					posmax++;
-				}
-			}
-		else
-			while (stack->stack_a && is_in_array(maxs, 6,
-					stack->stack_a->value) != 1 && size != 1)
-			{
-				if (posmax <= size / 2)
-				{
-					do_ope(stack, 6);
-					posmin--;
-					posmax--;
-				}
-				else
-				{
-					do_ope(stack, 9);
-					posmin++;
-					posmax++;
-				}
-			}
+		push_if_array(stack, &t_m, &c, &size);
+		rotate_to_target(stack, &t_m, size);
 	}
 	while (c-- > 0)
 		do_ope(stack, 10);
-	ft_selection_sort_from_b(stack, size2);
-	// while (stack->stack_b)
-	// 	do_ope(stack, 4);
+	ft_selection_sort_from_b(stack, stack->size);
+	free(t_m.mins);
+	free(t_m.maxs);
 }
-
-
-// void	ft_selection_sort_from_b(t_stack *stack)
-// {
-// 	int		posmax;
-// 	int		posmin;
-// 	int		c;
-// 	t_node	*min;
-// 	t_node	*max;
-//
-// 	min = find_min(stack->stack_a, &posmin);
-// 	max = find_max(stack->stack_a, &posmax);
-// 	while (stack->stack_a)
-// 	{
-// 		if (stack->stack_a && stack->stack_a->value == min->value)
-// 		{
-// 			do_ope(stack, 5);
-// 			posmax--;
-// 			stack->size--;
-// 			min = find_min(stack->stack_a, &posmin);
-// 		}
-// 		if (stack->stack_a && stack->stack_a->value == max->value)
-// 		{
-// 			do_ope(stack, 5);
-// 			do_ope(stack, 7);
-// 			posmin--;
-// 			c++;
-// 			stack->size--;
-// 			max = find_max(stack->stack_a, &posmax);
-// 		}
-// 		if (ft_imin(posmin, stack->size - posmin) <= ft_imin(posmax, stack->size - posmax))
-// 			while (stack->stack_a && stack->stack_a->value != min->value)
-// 			{
-// 				if (posmin <= stack->size / 2)
-// 				{
-// 					do_ope(stack, 6);
-// 					posmin--;
-// 					posmax--;
-// 				}
-// 				else
-// 				{
-// 					do_ope(stack, 9);
-// 					posmin++;
-// 					posmax++;
-// 				}
-// 			}
-// 		else
-// 			while (stack->stack_a && stack->stack_a->value != max->value)
-// 			{
-// 				if (posmax <= stack->size / 2)
-// 				{
-// 					do_ope(stack, 6);
-// 					posmin--;
-// 					posmax--;
-// 				}
-// 				else
-// 				{
-// 					do_ope(stack, 9);
-// 					posmin++;
-// 					posmax++;
-// 				}
-// 			}
-// 	}
-// 	while (c-- > 0)
-// 		do_ope(stack, 10);
-// 	while (stack->stack_b)
-// 		do_ope(stack, 4);
-// }

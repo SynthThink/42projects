@@ -6,12 +6,11 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/05 16:13:45 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/05 17:18:27 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/08 12:15:51 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
 
 int		get_lst_len(t_node *tmp)
 {
@@ -36,13 +35,11 @@ void	set_pivot_sorted(t_node *node, int pvalue)
 	}
 }
 
-int		find_min_int(t_node *node, int threshold)
+int		find_min_int(t_node *tmp, long threshold)
 {
 	int		min;
-	t_node	*tmp;
 
 	min = 2147483647;
-	tmp = node->next;
 	while (tmp)
 	{
 		if (min > tmp->value && tmp->value > threshold)
@@ -50,6 +47,20 @@ int		find_min_int(t_node *node, int threshold)
 		tmp = tmp->next;
 	}
 	return (min);
+}
+
+int		find_max_int(t_node *tmp, long threshold)
+{
+	int		max;
+
+	max = -2147483648;
+	while (tmp)
+	{
+		if (max < tmp->value && tmp->value < threshold)
+			max = tmp->value;
+		tmp = tmp->next;
+	}
+	return (max);
 }
 
 int		find_median(t_node *node, int size)
@@ -60,7 +71,7 @@ int		find_median(t_node *node, int size)
 
 	i = 0;
 	if (!(nb = (int *)malloc(sizeof(int) * (size / 2 + 3))))
-		exit (-1);
+		exit(-1);
 	while (i < size / 2)
 	{
 		if (i > 0)

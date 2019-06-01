@@ -6,33 +6,16 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/30 18:51:08 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/05 18:13:02 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/22 14:35:33 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_stack	*initialize_stack(void)
+void	ft_free(t_stack *stack, t_node *node)
 {
-	t_stack	*stack;
-
-	if (!(stack = (t_stack *)malloc(sizeof(t_stack))))
-		exit(-1);
-	stack->stack_a = NULL;
-	stack->stack_b = NULL;
-	stack->operations = NULL;
-	stack->options = ft_strdup("");
-	stack->count = 0;
-	stack->size = 0;
-	return (stack);
-}
-
-void	ft_free(t_stack *stack)
-{
-	t_node	*node;
 	t_node	*tmp;
 
-	node = stack->stack_a;
 	while (node)
 	{
 		tmp = node->next;
@@ -54,36 +37,82 @@ void	ft_free(t_stack *stack)
 		node = tmp;
 	}
 	free(stack->options);
+	free(stack);
 }
 
-void	ft_print_ope(t_node *operations)
+void	ft_custom_sort_3(t_stack *stack, int size)
 {
-	while (operations)
+	if (size == 2)
 	{
-		if (operations->value == 1)
-			write(1, "sa\n", 3);
-		else if (operations->value == 2)
-			write(1, "sb\n", 3);
-		else if (operations->value == 3)
-			write(1, "ss\n", 3);
-		else if (operations->value == 4)
-			write(1, "pa\n", 3);
-		else if (operations->value == 5)
-			write(1, "pb\n", 3);
-		else if (operations->value == 6)
-			write(1, "ra\n", 3);
-		else if (operations->value == 7)
-			write(1, "rb\n", 3);
-		else if (operations->value == 8)
-			write(1, "rr\n", 3);
-		else if (operations->value == 9)
-			write(1, "rra\n", 4);
-		else if (operations->value == 10)
-			write(1, "rrb\n", 4);
-		else if (operations->value == 11)
-			write(1, "rrr\n", 4);
-		operations = operations->next;
+		if (stack->stack_a->value > stack->stack_a->next->value)
+			do_ope(stack, 1);
 	}
+	else if (size == 3)
+	{
+		if (stack->stack_a->value > stack->stack_a->next->value &&
+			stack->stack_a->value > stack->stack_a->next->next->value &&
+			stack->stack_a->next->value < stack->stack_a->next->next->value)
+			do_ope(stack, 6);
+		if (stack->stack_a->value > stack->stack_a->next->value)
+			do_ope(stack, 1);
+		if (stack->stack_a->next->next->value < stack->stack_a->value)
+			do_ope(stack, 9);
+		else if (stack->stack_a->next->next->value <
+			stack->stack_a->next->value)
+		{
+			do_ope(stack, 9);
+			do_ope(stack, 1);
+		}
+	}
+}
+
+void	ft_custom_sort_5(t_stack *stack, int size)
+{
+	long	*maxs;
+	int		i;
+
+	i = size - 3;
+	maxs = find_n_max(stack->stack_a, size - 3);
+	while (i > 0)
+	{
+		while (is_in_array(maxs, size - 3, stack->stack_a->value) != 1)
+			do_ope(stack, 6);
+		while (is_in_array(maxs, size - 3, stack->stack_a->value) == 1)
+		{
+			do_ope(stack, 5);
+			i--;
+		}
+	}
+	ft_custom_sort_3(stack, 3);
+	if (size == 5)
+		if (stack->stack_b->value > stack->stack_b->next->value)
+			do_ope(stack, 2);
+	while (size-- - 3 > 0)
+	{
+		do_ope(stack, 4);
+		do_ope(stack, 6);
+	}
+	free(maxs);
+}
+
+void	choose_sort(t_stack *stack)
+{
+	if (stack->size <= 3 && stack->size > 0)
+		ft_custom_sort_3(stack, stack->size);
+	else if (stack->size <= 5 && stack->size > 0)
+		ft_custom_sort_5(stack, stack->size);
+	else if (stack->size <= 50)
+		ft_selection_sort(stack, stack->size, 1);
+	else if (stack->size <= 100)
+		ft_selection_sort(stack, stack->size, 4);
+	else if (stack->size <= 300)
+		ft_selection_sort(stack, stack->size, 6);
+	else
+		ft_selection_sort(stack, stack->size, stack->size / 40);
+	if (is_sort(stack->stack_a) == 0)
+		ft_selection_sort(stack, stack->size, 1);
+	if (ft_strchr(stack->options, 's') == NULL && stack->operations != NULL)
+		ft_print_ope(stack->operations);
 }
 
 int		main(int ac, char **av)
@@ -94,18 +123,8 @@ int		main(int ac, char **av)
 		return (0);
 	stack = initialize_stack();
 	ft_parse(stack, av, ac);
-	// if (has_duplicates(stack->stack_a) == 0)
-	// 	ft_error();
-	// ft_quick_sort(stack);
-	// if (ft_strchr(stack->options, 'd') != NULL)
-	// {
-	// 	print_list(stack->stack_a, "stack a");
-	// 	print_list(stack->stack_b, "stack b");
-	// 	ft_printf("\n%d instructions\n", stack->count);
-	// }
-	// if (ft_strchr(stack->options, 's') == NULL)
-	// 	ft_print_ope(stack->operations);
-	// ft_free(stack);
-	// free(stack);
+	if (stack->stack_a && is_sort(stack->stack_a) == 0 && !stack->stack_b)
+		choose_sort(stack);
+	ft_free(stack, stack->stack_a);
 	return (0);
 }

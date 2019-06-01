@@ -6,7 +6,7 @@
 #    By: malluin <malluin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/22 14:56:26 by malluin           #+#    #+#              #
-#    Updated: 2019/01/14 14:33:50 by malluin          ###   ########.fr        #
+#    Updated: 2019/02/14 13:17:39 by malluin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,12 +53,12 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(MAKE) -C libft/
-	$(AR) rc $@ $?
-	$(AR) r $@ $$($(AR) t libft/libft.a | grep ".o" | sed "s/^/libft\//")
+	@$(AR) rc $@ $?
+	@$(AR) r $@ $$($(AR) t libft/libft.a | grep ".o" | sed "s/^/libft\//")
 	ranlib $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
-	$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_PATH) :
 	@mkdir $(OBJ_PATH) 2> /dev/null || true

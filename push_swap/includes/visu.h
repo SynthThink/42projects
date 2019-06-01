@@ -6,18 +6,15 @@
 /*   By: malluin <malluin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 18:22:25 by malluin           #+#    #+#             */
-/*   Updated: 2019/02/01 15:20:15 by malluin          ###   ########.fr       */
+/*   Updated: 2019/02/22 14:56:26 by malluin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VISU_H
 # define VISU_H
 
-# define WIDTH 1024
-# define HEIGHT 768
-// # define XOFF (WIDTH / 2)
-// # define YOFF (HEIGHT / 10)
-
+# define WIDTH 1280
+# define HEIGHT 1024
 # include "mlx.h"
 # include "libft.h"
 # include "push_swap.h"
