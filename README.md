@@ -20,3 +20,18 @@ OpenGL has to be installed as it is required by the MLX library.<br/>
 #### Usage
 An example of usage using ruby:<br/>
 `ARG=`ruby -e "puts (-150..149).to_a.shuffle.join(' ')"`; ./push_swap $ARG | ./checker -v $ARG`
+
+### Piscine php
+Intensive 2 weeks work to learn the essentials of php, html/css, mysql and introduction to javascript.
+
+* Day00 : HTML/CSS
+* Day01 : Basics of PHP
+* Day02 : PHP + Regex
+* Day03 : PHP POST, GET, SESSION + use of local server
+* Day04 : PHP POST, GET, SESSION (basic login/auth, prototype for a chat)
+* Rush00 : Two days to make a crude e-commerce website with PHP and MYSQL database. Main features: Differents products that can be filtered and dynamically added/modified. Accounts management, possibility to order and keep track of preceding orders. Admin panel with user/product management etc.
+* Day05 : Mysql
+* Day06 : Introduction to object-oriented programming with PHP
+* Day07 : Object-oriented programming with PHP
+* Day09 : Introduction to js, jquery and AJAX. 
+
