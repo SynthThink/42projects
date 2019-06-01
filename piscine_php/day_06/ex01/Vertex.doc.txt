@@ -1,0 +1,22 @@
+
+<- Vertex ----------------------------------------------------------------------
+The Vertex class handles 3D(x,y,z) Vertex.
+
+An instance can be contructed from either an array of values:
+new Vertex( array( 'x' => 12, 'y' => 13, 'z' => 15 ) );
+Two optionals arguments : w and Color which is an instance from class Color
+new Vertex( array( 'x' => 1.0, 'y' => 0.0, 'z' => 0.0, 'w' => 1.0, 'color' => $green ) );
+
+Vertex constitutive are left as is (negatives, overflow).
+Any other use is undefined behaviour.
+
+The class only provides the following methods standard methods:
+
+__set to access all private variables and overwrite them.
+__get to access all private variables and read them.
+doc to print this documentation.
+__toString to print Vertex characteristics
+
+verbose static attribute is available for more information during construction and deconstruction of Vertex.
+
+---------------------------------------------------------------------- Vertex ->

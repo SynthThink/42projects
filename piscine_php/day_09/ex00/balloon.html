@@ -1,0 +1,48 @@
+<HTML>
+	<HEAD>
+		<title>balloon</title>
+	</HEAD>
+	<BODY>
+		<div id="balloon" onmouseout="ft_reduce()" onclick= "ft_alert()" style="width:200px;height:200px;background:red;border-radius:100px;"></div>
+		<script>
+			function ft_reduce(){
+				var length = document.getElementById('balloon').style.width;
+				length = parseInt(length, 10);
+				if (length >= 205)
+				{
+					length -= 5;
+					document.getElementById('balloon').style.height = length;
+					document.getElementById('balloon').style.width = length;
+				}
+				var color = document.getElementById('balloon').style.background;
+				if (color == "red")
+					document.getElementById('balloon').style.background = "blue";
+				else if (color == "green")
+					document.getElementById('balloon').style.background = "red";
+				else
+					document.getElementById('balloon').style.background = "green";
+				console.log(length);
+			}
+			function ft_alert(){
+				var length = document.getElementById('balloon').style.width;
+				length = parseInt(length, 10);
+				if (length <= 410)
+					length += 10;
+				else
+					length = 200;
+				console.log(length);
+				document.getElementById('balloon').style.height = length;
+				document.getElementById('balloon').style.width = length;
+				var px = length.toString(10).concat("px");
+				document.getElementById('balloon').style.borderRadius = px;
+				var color = document.getElementById('balloon').style.background;
+				if (color == "red")
+					document.getElementById('balloon').style.background = "green";
+				else if (color == "green")
+					document.getElementById('balloon').style.background = "blue";
+				else
+					document.getElementById('balloon').style.background = "red";
+			}
+		</script>
+	</BODY>
+</HTML>

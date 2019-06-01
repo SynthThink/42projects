@@ -1,0 +1,42 @@
+<HTML>
+	<HEAD>
+		<title>calc</title>
+		<script src ="https://code.jquery.com/jquery-3.3.1.js"></script>
+	</HEAD>
+	<BODY>
+		<input id="left" type=text/>
+		<select id="operator">
+		    <option value="+">+</option>
+		    <option value="-">-</option>
+			<option value="*">*</option>
+		    <option value="/">/</option>
+		    <option value="%">%</option>
+		</select>
+		<input id="right" type=text/>
+		<input id ="button" type=submit value="Try me!"/>
+		<script>
+			function alert_do() { alert('Please, use me...'); }
+			setInterval(alert_do , 30000);
+			$(document).ready(function() {
+				$('#button').click(function() {
+					var nb1 = $('#left').val();
+					var nb2 = $('#right').val();
+					var op = $('#operator').val();
+					if (nb1 < 0 || nb2 < 0)
+						alert("Error :(");
+					else if (nb2 == 0 && (op =='%' || op == '/'))
+					{
+						alert("It's over 9000!");
+						console.log("It's over 9000!");
+					}
+					else
+					{
+						var res = eval(nb1 + op + nb2);
+						alert(res);
+						console.log(res);
+					}
+				});
+			});
+		</script>
+	</BODY>
+</HTML>

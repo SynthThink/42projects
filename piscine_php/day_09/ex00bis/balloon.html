@@ -1,0 +1,34 @@
+<HTML>
+	<HEAD>
+		<title>balloon</title>
+		<script src ="https://code.jquery.com/jquery-3.3.1.js"></script>
+	</HEAD>
+	<BODY>
+		<div id="balloon" style="width:200px;height:200px;background:red;border-radius:100px;"></div>
+		<script>
+		var colors = ["#ff0000", "#00ff00", "#0000ff"];
+		var counter = 0;
+		$(document).ready(function() {
+			$('#balloon').click(function() {
+				var width = $('#balloon').width();
+				if (width > 410)
+					width = 190;
+				$('#balloon').width(width + 10);
+				$('#balloon').height(width + 10);
+				$('#balloon').css('border-radius', width / 2 + 20);
+				$('#balloon').css('background', colors[++counter % colors.length]);
+			});
+			$('#balloon').mouseout(function() {
+				var width = $('#balloon').width();
+				if (width < 205)
+					width = 205;
+				$('#balloon').width(width - 5);
+				$('#balloon').height(width - 5);
+				$('#balloon').css('border-radius', width / 2 + 20);
+				counter += 2;
+				$('#balloon').css('background', colors[(counter) % colors.length]);
+			});
+		});
+		</script>
+	</BODY>
+</HTML>

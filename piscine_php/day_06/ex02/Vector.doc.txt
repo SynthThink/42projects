@@ -1,0 +1,30 @@
+
+<- Vector ----------------------------------------------------------------------
+The Vector class handles 3D(x,y,z) Vectors.
+
+An instance can be constructed from a destination vertex and an origin vertex.
+$vtc2  = new Vector( array( 'orig' => $orig2, 'dest' => $dest2 ) );
+The origin is an optional argument : The default origin is a vertex of coordinates (0,0,0)
+new Vector( array( 'orig' => $vtxO, 'dest' => $vtxX ) );
+
+Vectors constitutive are expected to be of Vertex class and are left as is (negatives, overflow).
+Any other use is undefined behaviour.
+
+All attributes are private and cannot be accessed directly.
+
+The class provides the following methods standard methods:
+- public function magnitude () : Calculates the magnitude of the vector (it's length).
+- public function normalize () : Calculates and return the normalized version of the vector.
+- public function add ($vector) : Calculates and return the addition of the vector and the Vector in argument.
+- public function sub ($vector) : Calculates and return the difference of the vector and the Vector in argument.
+- public function opposite () : Calculates and return the opposite of the vector
+- public function scalarProduct ($scalar) : Calculates and return the scalar product of the vector with the scalar argument.
+- public function dotProduct ($vector) : Calculates and return the dot product between the two vectors.
+- public function crossProduct ($vector) : Calculates and return the cross product between the two vectors.
+- public function cos($vector) : Calculates and return the cosinus between the vector and the argument.
+doc : print this documentation.
+__toString to print Vector characteristics
+
+verbose static attribute is available for more information during construction and deconstruction of Vector.
+
+---------------------------------------------------------------------- Vector ->

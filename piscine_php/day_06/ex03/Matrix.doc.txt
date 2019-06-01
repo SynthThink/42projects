@@ -1,0 +1,26 @@
+
+<- Matrix ----------------------------------------------------------------------
+The Matrix class defines 4x4 Matrix that defines different types of transformation.
+
+A matrix is defined either by a set of PRESETS or a custom array of 4 x 4 ints.
+Following presets are available:
+IDENTITY, SCALE, RX, RY, RZ, TRANSLATION and PROJECTION.
+$matrix = new Matrix( array( 'preset' => Matrix::IDENTITY ) );
+Depending on the preset there are additional required arguments:
+SCALE : 'scale' argument as an int
+RX RY RZ : 'angle' argument as int which represents degrees of angle
+TRANSLATION : 'vtc' argument which is an instance of Vertex class
+PROJECTION : 'fov' in degrees, 'ratio' as float, 'near' as int, 'far' as int.
+
+Any other use is undefined behaviour.
+
+All attributes are private and cannot be accessed directly.
+
+The class provides the following methods standard methods:
+- public function mult () : Return a new matrix which is the dot product of the two matrix.
+- public function transformVertex () : Return a new Vertex which has been transformed by the matrix.
+doc : print this documentation.
+__toString to print Matrix characteristics
+
+verbose static attribute is available for more information during construction and deconstruction of Matrix.
+---------------------------------------------------------------------- Matrix ->

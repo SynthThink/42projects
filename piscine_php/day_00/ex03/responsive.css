@@ -1,0 +1,51 @@
+H1 {
+	font-size:3vw
+}
+BODY {
+	background-color: Black;
+}
+td {
+	color:white;
+	text-align: center;
+}
+p {
+	font-size: 1vw;
+}
+table {
+	margin-left: 10px;
+	width:97%;
+	border-spacing: 0px;
+	table-layout:fixed;
+	border: 1px solid black;
+}
+h2 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size:1.5vw;
+}
+.blue {background-color:RoyalBlue}
+.green {background-color:SpringGreen; color:black}
+.red {background-color:Firebrick}
+.lred {background-color:LightCoral; color:black}
+.white {background-color:white; color:black}
+.yellow {background-color:yellow; color:black}
+.grey {background-color:grey; color:black}
+.bronze {background-color:DarkOliveGreen; color:black}
+.lorange {background-color:Moccasin; color:black}
+.lpurple {background-color:Orchid; color:black}
+.crimson {background-color:DeepPink; color:black}
+
+.weight {
+	font-style: italic;
+	margin-top: 0px;
+	margin-bottom: 2px;
+	margin-right: 3px;
+	text-align: right
+}
+.number {
+	font-style: bold;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 4px;
+	text-align: left
+}

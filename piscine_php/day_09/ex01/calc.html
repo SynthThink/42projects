@@ -1,0 +1,71 @@
+<HTML>
+	<HEAD>
+		<title>calc</title>
+	</HEAD>
+	<BODY>
+		<input id="left" type=text/>
+		<select id="operator">
+		    <option value="+">+</option>
+		    <option value="-">-</option>
+			<option value="*">*</option>
+		    <option value="/">/</option>
+		    <option value="%">%</option>
+		</select>
+		<input id="right" type=text/>
+		<input onclick="operation()" type=submit value="Try me!"/>
+		<script>
+			function alert_do() { alert('Please, use me...'); }
+			function operation(){
+				var op = document.getElementById('operator').value;
+				var left = document.getElementById('left').value;
+				var right = document.getElementById('right').value;
+				nb1 = parseInt(left, 10);
+				nb2 = parseInt(right, 10);
+				var error = 0;
+				if (!(nb1 >= 0 && nb2 >= 0))
+				{
+					alert('Error :(');
+					error = 1;
+				}
+				var result = 0;
+				if (error == 0 )
+				{
+					if (op == '+')
+						result = nb1 + nb2;
+					else if (op == '-')
+						result = nb1 - nb2;
+					else if (op == '*')
+						result = nb1 * nb2;
+					else if (op == '/')
+					{
+						if (nb2 == 0)
+						{
+							console.log("It's over 9000!");
+							alert("It's over 9000!");
+							error = 1;
+							}
+						else
+							result = nb1 / nb2;
+					}
+					else if (op == '%')
+					{
+						if (nb2 == 0)
+						{
+							console.log("It's over 9000!");
+							alert("It's over 9000!");
+							error = 1;
+							}
+						else
+							result = nb1 % nb2;
+					}
+					if (error == 0)
+					{
+						console.log(result);
+						alert(result);
+					}
+				}
+			}
+			setInterval(alert_do , 30000);
+		</script>
+	</BODY>
+</HTML>
