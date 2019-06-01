@@ -35,3 +35,27 @@ Intensive 2 weeks work to learn the essentials of php, html/css, mysql and intro
 * Day07 : Object-oriented programming with PHP
 * Day09 : Introduction to js, jquery and AJAX. 
 
+### ft_ls
+The goal of the project is to make an implementation of the POSIX command ls with several options such as recursive -R in order to familiarize oneself with the filesystem.
+
+#### Installation
+To install simply type: `make`<br/>
+
+#### Usage
+`ft_ls [-1Raglrtu] [file ...]`
+
+
+### ft_printf
+Implementation of the printf function which is widely available in many programming languages. This implementation aims to be close to the MacOs implementation in C.
+
+Supported conversions: 
+* integers : `DiouxX` floats: `fF` 
+* strings: `sS` char: `cC` 
+* addresses: `p`
+
+Options availables:
+* `-+0 #`
+* minimum-length `[0-9]*`
+* precision `.[0-9)*`
+* size of conversions `hh, h, l, ll, z, j, L`
+
